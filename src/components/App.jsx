@@ -17,21 +17,18 @@ export class App extends Component {
     this.setState({
       contacts: [{ name: value, id: this.uniqId }],
     });
-    console.log(this.state);
   };
 
   handleSubmit = evt => {
     evt.preventDefault();
-    this.props.onSubmit({ ...this.state });
-    this.setState({ name: '', number: '' });
-    console.log(evt.target);
+    console.log(this.state);
   };
 
   render() {
     return (
       <div>
         <h2>Phonebook</h2>
-        <form onSubmit={this.onHandleSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <label htmlFor={this.uniqId}>Name</label>
           <input
             type="text"
