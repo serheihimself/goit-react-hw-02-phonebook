@@ -7,8 +7,6 @@ export class App extends Component {
     contacts: [],
   };
 
-  uniqId = nanoid();
-
   handleChange = ev => {
     const { name, value } = ev.target;
     this.setState({
@@ -21,7 +19,7 @@ export class App extends Component {
     this.setState(prevState => ({
       contacts: [
         ...prevState.contacts,
-        { name: this.state.name, id: this.uniqId },
+        { name: this.state.name, id: nanoid() },
       ],
     }));
     this.setState({ name: '' });
