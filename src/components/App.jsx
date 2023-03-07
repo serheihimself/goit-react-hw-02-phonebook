@@ -14,13 +14,17 @@ export class App extends Component {
     this.setState({
       [name]: value,
     });
-    this.setState({
-      contacts: [{ name: value, id: this.uniqId }],
-    });
   };
 
   handleSubmit = evt => {
     evt.preventDefault();
+    this.setState(prevState => ({
+      contacts: [
+        ...prevState.contacts,
+        { name: this.state.name, id: this.uniqId },
+      ],
+    }));
+    this.setState({ name: '' });
     console.log(this.state);
   };
 
