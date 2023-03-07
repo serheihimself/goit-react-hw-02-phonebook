@@ -3,24 +3,28 @@ import React, { Component } from 'react';
 
 export class App extends Component {
   state = {
-    contacts: [],
     name: '',
+    contacts: [],
   };
 
   uniqId = nanoid();
 
-  onHandleSubmit = ev => {
-    ev.preventDefault();
-    const form = ev.currentTarget;
+  handleChange = ev => {
+    const { name, value } = ev.target;
     this.setState({
-      contacts: [
-        { name: ev.currentTarget.elements.name.value },
-        { id: this.uniqId },
-      ],
-      name: ev.currentTarget.elements.name.value,
+      [name]: value,
+    });
+    this.setState({
+      contacts: [{ name: value, id: this.uniqId }],
     });
     console.log(this.state);
-    form.reset();
+  };
+
+  handleSubmit = evt => {
+    evt.preventDefault();
+    this.props.onSubmit({ ...this.state });
+    this.setState({ name: '', number: '' });
+    console.log(evt.target);
   };
 
   render() {
@@ -33,6 +37,8 @@ export class App extends Component {
             type="text"
             name="name"
             id={this.uniqId}
+            value={this.state.name}
+            onChange={this.handleChange}
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
