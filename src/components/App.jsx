@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import React, { Component } from 'react';
 
 export class App extends Component {
   state = {
@@ -9,11 +9,25 @@ export class App extends Component {
 
   uniqId = nanoid();
 
+  onHandleSubmit = ev => {
+    ev.preventDefault();
+    const form = ev.currentTarget;
+    this.setState({
+      contacts: [
+        { name: ev.currentTarget.elements.name.value },
+        { id: this.uniqId },
+      ],
+      name: ev.currentTarget.elements.name.value,
+    });
+    console.log(this.state);
+    form.reset();
+  };
+
   render() {
     return (
       <div>
         <h2>Phonebook</h2>
-        <form action="">
+        <form onSubmit={this.onHandleSubmit}>
           <label htmlFor={this.uniqId}>Name</label>
           <input
             type="text"
@@ -27,15 +41,11 @@ export class App extends Component {
         </form>
         <h2>Contacts</h2>
         <ul>
-          <li>
-            <p></p>
-          </li>
-          <li>
-            <p></p>
-          </li>
-          <li>
-            <p></p>
-          </li>
+          {this.state.contacts.map(el => (
+            <li key={el.id}>
+              <p>{el.name}</p>
+            </li>
+          ))}
         </ul>
       </div>
     );
