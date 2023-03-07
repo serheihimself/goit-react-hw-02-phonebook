@@ -3,26 +3,29 @@ import React, { Component } from 'react';
 
 export class App extends Component {
   state = {
-    name: '',
     contacts: [],
+    name: '',
+    number: '',
   };
 
   handleChange = ev => {
-    const { name, value } = ev.target;
+    const { name, value, number } = ev.target;
     this.setState({
       [name]: value,
+      [number]: value,
     });
   };
 
   handleSubmit = evt => {
     evt.preventDefault();
+    const form = evt.target;
     this.setState(prevState => ({
       contacts: [
         ...prevState.contacts,
-        { name: this.state.name, id: nanoid() },
+        { name: this.state.name, number: this.state.number, id: nanoid() },
       ],
     }));
-    this.setState({ name: '' });
+    form.reset();
     console.log(this.state);
   };
 
@@ -31,15 +34,25 @@ export class App extends Component {
       <div>
         <h2>Phonebook</h2>
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor={this.uniqId}>Name</label>
+          <label htmlFor={nanoid()}>Name</label>
           <input
             type="text"
             name="name"
-            id={this.uniqId}
+            id={nanoid()}
             value={this.state.name}
             onChange={this.handleChange}
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            required
+          />
+          <label htmlFor={nanoid()}>Number</label>
+          <input
+            type="tel"
+            name="number"
+            id={nanoid()}
+            onChange={this.handleChange}
+            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
           />
           <button type="submit">Add contact</button>
@@ -48,7 +61,9 @@ export class App extends Component {
         <ul>
           {this.state.contacts.map(el => (
             <li key={el.id}>
-              <p>{el.name}</p>
+              <p>
+                {el.name}:{el.number}
+              </p>
             </li>
           ))}
         </ul>
