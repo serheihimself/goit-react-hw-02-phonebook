@@ -24,10 +24,11 @@ export class App extends Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
+    const { name, number } = this.state;
     this.setState(prevState => ({
       contacts: [
         ...prevState.contacts,
-        { name: this.state.name, number: this.state.number, id: nanoid() },
+        { name: name, number: number, id: nanoid() },
       ],
     }));
     this.setState({ name: '', number: '' });
