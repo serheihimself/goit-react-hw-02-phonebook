@@ -11,17 +11,18 @@ export class App extends Component {
     filter: '',
   };
 
-  addContactsList = ev => {
-    console.log(ev);
+  addContactsList = newContact => {
     const { contacts } = this.state;
     const trueFilter = contacts.some(
-      evt => evt.name.toLowerCase() === ev.name.toLowerCase()
+      contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
     );
     if (trueFilter) {
-      return alert(`${ev.name} is already in contacts.`);
+      return alert(`${newContact.name} is already in contacts.`);
     }
-    ev = { ...ev, id: nanoid() };
-    this.setState({ contacts: [ev, ...contacts] });
+    const contact = { ...newContact, id: nanoid() };
+    this.setState(prevState => ({
+      contacts: [contact, ...prevState.contacts],
+    }));
   };
 
   filterContacts = () => {
@@ -48,15 +49,21 @@ export class App extends Component {
       <div>
         <h1>Phonebook</h1>
         <ConstactForm onSubmit={this.addContactsList} />
-        <h2>Contacts</h2>
-        <Filter
-          value={this.state.filter}
-          onFilterChange={this.onFilterChange}
-        />
-        <ContactList
-          onFilterContacts={filteredName}
-          onChange={this.deletedContacts}
-        />
+        {this.state.contacts.length > 0 ? (
+          <>
+            <h2>Contacts</h2>
+            <Filter
+              value={this.state.filter}
+              onFilterChange={this.onFilterChange}
+            />
+            <ContactList
+              onFilterContacts={filteredName}
+              onChange={this.deletedContacts}
+            />
+          </>
+        ) : (
+          <h2>"Contact list is empty"</h2>
+        )}
       </div>
     );
   }
